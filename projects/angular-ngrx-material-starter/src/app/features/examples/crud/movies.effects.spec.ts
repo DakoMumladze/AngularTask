@@ -5,21 +5,21 @@ import { TestScheduler } from 'rxjs/testing';
 
 import { LocalStorageService } from '../../../core/core.module';
 
-import { BookState } from './books.model';
+import { moviestate } from './movies.model';
 import { Actions, getEffectsMetadata } from '@ngrx/effects';
-import { BooksEffects, BOOKS_KEY } from './books.effects';
-import { actionBooksDeleteOne, actionBooksUpsertOne } from './books.actions';
+import { moviesEffects, movies_KEY } from './movies.effects';
+import { actionmoviesDeleteOne, actionmoviesUpsertOne } from './movies.actions';
 
 const scheduler = new TestScheduler((actual, expected) =>
   assert.deepStrictEqual(actual, expected)
 );
 
-describe('BooksEffects', () => {
-  describe('persistBooks', () => {
-    const booksState: BookState = {
+describe('moviesEffects', () => {
+  describe('persistmovies', () => {
+    const moviesState: moviestate = {
       entities: {
         '1': {
-          author: 'Author',
+          imageUrl: 'imageUrl',
           description: 'Description',
           id: '1',
           title: 'Title'
@@ -34,31 +34,31 @@ describe('BooksEffects', () => {
       localStorage = jasmine.createSpyObj('localStorage', ['setItem']);
       store = of({
         examples: {
-          books: booksState
+          movies: moviesState
         }
       }) as any;
     });
 
     it('should not dispatch any actions', () => {
       const actions = new Actions(EMPTY);
-      const effects = new BooksEffects(actions, store, localStorage);
+      const effects = new moviesEffects(actions, store, localStorage);
       const metadata = getEffectsMetadata(effects);
 
-      expect(metadata.persistBooks.dispatch).toEqual(false);
+      expect(metadata.persistmovies.dispatch).toEqual(false);
     });
 
     it('should call setItem on LocalStorageService for delete one action', () => {
       scheduler.run(helpers => {
         const { cold } = helpers;
-        const action = actionBooksDeleteOne({ id: '1' });
+        const action = actionmoviesDeleteOne({ id: '1' });
         const source = cold('a', { a: action });
         const actions = new Actions(source);
-        const effects = new BooksEffects(actions, store, localStorage);
+        const effects = new moviesEffects(actions, store, localStorage);
 
-        effects.persistBooks.subscribe(() => {
+        effects.persistmovies.subscribe(() => {
           expect(localStorage.setItem).toHaveBeenCalledWith(
-            BOOKS_KEY,
-            booksState
+            movies_KEY,
+            moviesState
           );
         });
       });
@@ -67,15 +67,15 @@ describe('BooksEffects', () => {
     it('should call setItem on LocalStorageService for upsert one action', () => {
       scheduler.run(helpers => {
         const { cold } = helpers;
-        const action = actionBooksUpsertOne({ book: {} as any });
+        const action = actionmoviesUpsertOne({ movie: {} as any });
         const source = cold('a', { a: action });
         const actions = new Actions(source);
-        const effects = new BooksEffects(actions, store, localStorage);
+        const effects = new moviesEffects(actions, store, localStorage);
 
-        effects.persistBooks.subscribe(() => {
+        effects.persistmovies.subscribe(() => {
           expect(localStorage.setItem).toHaveBeenCalledWith(
-            BOOKS_KEY,
-            booksState
+            movies_KEY,
+            moviesState
           );
         });
       });

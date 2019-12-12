@@ -20,7 +20,7 @@ import { StockMarketService } from './stock-market/stock-market.service';
 import { ParentComponent } from './theming/parent/parent.component';
 import { ChildComponent } from './theming/child/child.component';
 import { CrudComponent } from './crud/components/crud.component';
-import { BooksEffects } from './crud/books.effects';
+import { moviesEffects } from './crud/movies.effects';
 import { FormComponent } from './form/components/form.component';
 import { FormEffects } from './form/form.effects';
 import { AuthenticatedComponent } from './authenticated/authenticated.component';
@@ -57,7 +57,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       ExamplesEffects,
       TodosEffects,
       StockMarketEffects,
-      BooksEffects,
+      moviesEffects,
       FormEffects
     ])
   ],

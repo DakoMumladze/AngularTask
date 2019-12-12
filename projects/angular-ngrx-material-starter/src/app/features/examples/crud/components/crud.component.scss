@@ -23,3 +23,10 @@ mat-card {
 .col-md-6 {
   margin-bottom: 20px;
 }
+.image-container {
+  width: 100%;
+    img {
+      width: 100%;
+      object-fit: cover;
+    }
+}
