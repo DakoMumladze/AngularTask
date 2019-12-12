@@ -1,13 +1,6 @@
-# Angular 8, NgRx and Angular Material Starter
+# Project using  Angular 8, NgRx and Angular Material Starter
 
 ## Getting started
-
-```bash
-git clone https://github.com/tomastrajan/angular-ngrx-material-starter.git new-project
-cd new-project
-npm install
-npm start
-```
 
 ## Useful Commands
 
