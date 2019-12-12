@@ -1,7 +1,5 @@
 # Project using  Angular 8, NgRx and Angular Material Starter
 
-## Getting started
-
 ## Useful Commands
 
 - `npm start` - starts a dev server and opens browser with running app
