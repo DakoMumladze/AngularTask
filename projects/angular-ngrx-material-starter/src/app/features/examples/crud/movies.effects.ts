@@ -6,26 +6,26 @@ import { tap, withLatestFrom } from 'rxjs/operators';
 import { LocalStorageService } from '../../../core/core.module';
 
 import { State } from '../examples.state';
-import { actionBooksDeleteOne, actionBooksUpsertOne } from './books.actions';
-import { selectBooks } from './books.selectors';
+import { actionmoviesDeleteOne, actionmoviesUpsertOne } from './movies.actions';
+import { selectmovies } from './moviess.selectors';
 
-export const BOOKS_KEY = 'EXAMPLES.BOOKS';
+export const movies_KEY = 'EXAMPLES.movies';
 
 @Injectable()
-export class BooksEffects {
+export class moviesEffects {
   constructor(
     private actions$: Actions,
     private store: Store<State>,
     private localStorageService: LocalStorageService
   ) {}
 
-  persistBooks = createEffect(
+  persistmovies = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(actionBooksUpsertOne, actionBooksDeleteOne),
-        withLatestFrom(this.store.pipe(select(selectBooks))),
-        tap(([actions, booksState]) =>
-          this.localStorageService.setItem(BOOKS_KEY, booksState)
+        ofType(actionmoviesUpsertOne, actionmoviesDeleteOne),
+        withLatestFrom(this.store.pipe(select(selectmovies))),
+        tap(([actions, moviesState]) =>
+          this.localStorageService.setItem(movies_KEY, moviesState)
         )
       ),
     { dispatch: false }

@@ -1,15 +1,15 @@
-import { BookState } from './books.model';
-import { bookReducer, initialState } from './books.reducer';
-import { actionBooksDeleteOne, actionBooksUpsertOne } from './books.actions';
+import { moviestate } from './movies.model';
+import { movieReducer, initialState } from './movies.reducer';
+import { actionmoviesDeleteOne, actionmoviesUpsertOne } from './movies.actions';
 
-describe('BookReducer', () => {
-  const TEST_INITIAL_STATE: BookState = {
+describe('movieReducer', () => {
+  const TEST_INITIAL_STATE: MovieState = {
     ids: ['123'],
     entities: {
       '123': {
         id: '123',
         title: 'Reactive Programming with Angular and ngrx',
-        author: 'Oren Farhi',
+        imageUrl: 'Oren Farhi',
         description:
           'Learn to Harness the Power of Reactive Programming with RxJS and ngrx Extensions'
       }
@@ -18,51 +18,51 @@ describe('BookReducer', () => {
 
   it('should return the default state', () => {
     const action = {} as any;
-    const state = bookReducer(undefined, action);
+    const state = movieReducer(undefined, action);
 
     expect(state).toBe(initialState);
   });
 
-  it('should add a book', () => {
-    const action = actionBooksUpsertOne({
-      book: {
+  it('should add a movie', () => {
+    const action = actionmoviesUpsertOne({
+      movie: {
         id: '1234',
         title: 'test',
-        author: 'test',
+        imageUrl: 'test',
         description: 'test'
       }
     });
-    const state = bookReducer(TEST_INITIAL_STATE, action);
+    const state = movieReducer(TEST_INITIAL_STATE, action);
 
     expect(state.ids.length).toEqual(2);
     expect(state.entities['1234'].title).toEqual('test');
   });
 
-  it('should update a book', () => {
+  it('should update a movie', () => {
     const id = TEST_INITIAL_STATE.ids[0] as string;
-    const action = actionBooksUpsertOne({
-      book: {
+    const action = actionmoviesUpsertOne({
+      movie: {
         id: id,
         title: 'updated',
-        author: 'updated',
+        imageUrl: 'updated',
         description: 'updated'
       }
     });
 
-    const state = bookReducer(TEST_INITIAL_STATE, action);
+    const state = movieReducer(TEST_INITIAL_STATE, action);
     expect(state.entities[id]).toEqual(
       jasmine.objectContaining({
         title: 'updated',
-        author: 'updated',
+        imageUrl: 'updated',
         description: 'updated'
       })
     );
   });
 
-  it('should remove a book', () => {
+  it('should remove a movie', () => {
     const id = TEST_INITIAL_STATE.ids[0] as string;
-    const action = actionBooksDeleteOne({ id });
-    const state = bookReducer(TEST_INITIAL_STATE, action);
+    const action = actionmoviesDeleteOne({ id });
+    const state = movieReducer(TEST_INITIAL_STATE, action);
     expect(state.entities[id]).toBe(undefined);
   });
 });
