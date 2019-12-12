@@ -8,9 +8,9 @@ import { Observable } from 'rxjs';
 import { ROUTE_ANIMATIONS_ELEMENTS } from '../../../../core/core.module';
 
 import { State } from '../../examples.state';
-import { Book } from '../books.model';
-import { actionBooksDeleteOne, actionBooksUpsertOne } from '../books.actions';
-import { selectSelectedBook, selectAllBooks } from '../books.selectors';
+import { movie } from '../movies.model';
+import { actionmoviesDeleteOne, actionmoviesUpsertOne } from '../movies.actions';
+import { selectSelectedmovie, selectAllmovies } from '../moviess.selectors';
 
 @Component({
   selector: 'anms-crud',
@@ -21,17 +21,18 @@ import { selectSelectedBook, selectAllBooks } from '../books.selectors';
 export class CrudComponent {
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
 
-  bookFormGroup = this.fb.group(CrudComponent.createBook());
-  books$: Observable<Book[]> = this.store.pipe(select(selectAllBooks));
-  selectedBook$: Observable<Book> = this.store.pipe(select(selectSelectedBook));
+  movieFormGroup = this.fb.group(CrudComponent.createmovie());
+  movies$: Observable<movie[]> = this.store.pipe(select(selectAllmovies));
+  selectedmovie$: Observable<movie> = this.store.pipe(select(selectSelectedmovie));
 
   isEditing: boolean;
 
-  static createBook(): Book {
+  static createmovie(): movie {
     return {
       id: uuid(),
       title: '',
-      author: '',
+      imageUrl: '',
+      videoUrl: '',
       description: ''
     };
   }
@@ -42,9 +43,9 @@ export class CrudComponent {
     private router: Router
   ) {}
 
-  select(book: Book) {
+  select(movie: movie) {
     this.isEditing = false;
-    this.router.navigate(['examples/crud', book.id]);
+    this.router.navigate(['examples/crud', movie.id]);
   }
 
   deselect() {
@@ -52,15 +53,15 @@ export class CrudComponent {
     this.router.navigate(['examples/crud']);
   }
 
-  edit(book: Book) {
+  edit(movie: movie) {
     this.isEditing = true;
-    this.bookFormGroup.setValue(book);
+    this.movieFormGroup.setValue(movie);
   }
 
-  addNew(bookForm: NgForm) {
-    bookForm.resetForm();
-    this.bookFormGroup.reset();
-    this.bookFormGroup.setValue(CrudComponent.createBook());
+  addNew(movieForm: NgForm) {
+    movieForm.resetForm();
+    this.movieFormGroup.reset();
+    this.movieFormGroup.setValue(CrudComponent.createmovie());
     this.isEditing = true;
   }
 
@@ -68,18 +69,18 @@ export class CrudComponent {
     this.isEditing = false;
   }
 
-  delete(book: Book) {
-    this.store.dispatch(actionBooksDeleteOne({ id: book.id }));
+  delete(movie: movie) {
+    this.store.dispatch(actionmoviesDeleteOne({ id: movie.id }));
     this.isEditing = false;
     this.router.navigate(['examples/crud']);
   }
 
   save() {
-    if (this.bookFormGroup.valid) {
-      const book = this.bookFormGroup.value;
-      this.store.dispatch(actionBooksUpsertOne({ book }));
+    if (this.movieFormGroup.valid) {
+      const movie = this.movieFormGroup.value;
+      this.store.dispatch(actionmoviesUpsertOne({ movie }));
       this.isEditing = false;
-      this.router.navigate(['examples/crud', book.id]);
+      this.router.navigate(['examples/crud', movie.id]);
     }
   }
 }

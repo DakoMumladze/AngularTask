@@ -27,7 +27,7 @@ describe('CrudComponent', () => {
         provideMockStore({
           initialState: {
             examples: {
-              books: {
+              movies: {
                 ids: [],
                 entities: {}
               }

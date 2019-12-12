@@ -1,16 +1,19 @@
 <div class="container" rtl>
-  <h1>{{ 'anms.examples.crud.title' | translate }}</h1>
   <div class="row">
     <div class="col-md-6">
       <h2>{{ 'anms.examples.crud.subtitle1' | translate }}</h2>
-      <mat-card *ngFor="let book of books$ | async" [ngClass]="routeAnimationsElements"
-        (click)=select(book)>
-        <h3>{{book.title}}</h3>
-        <small>{{book.author}}</small>
+      <mat-card *ngFor="let movie of movies$ | async" [ngClass]="routeAnimationsElements" (click)=select(movie)>
+        <h3>{{movie.title}}</h3>
+        <div class="image-container">
+          <img src="{{movie.imageUrl}}" alt="movie poster" height="300">
+        </div>
+        <div class="mt-3">
+          <p>{{movie.description}}</p>
+        </div>
       </mat-card>
-      <p *ngIf="(books$ | async)?.length === 0">{{'anms.examples.crud.empty' | translate}}</p>
-      <button type="button" mat-fab color="primary" class="add" [ngClass]="routeAnimationsElements"
-        *ngIf="!isEditing" (click)="addNew(bookForm)">
+      <p *ngIf="(movies$ | async)?.length === 0">{{'anms.examples.crud.empty' | translate}}</p>
+      <button type="button" mat-fab color="primary" class="add" [ngClass]="routeAnimationsElements" *ngIf="!isEditing"
+        (click)="addNew(movieForm)">
         <fa-icon icon="plus"></fa-icon>
       </button>
     </div>
@@ -18,13 +21,13 @@
       <span class="d-flex justify-content-between">
         <h2>{{ 'anms.examples.crud.subtitle2' | translate }}</h2>
         <span class="d-flex justify-content-end">
-          <span *ngIf="selectedBook$ | async as selectedBook">
+          <span *ngIf="selectedmovie$ | async as selectedmovie">
             <button mat-icon-button color="accent" *ngIf="!isEditing">
-              <fa-icon icon="edit" (click)="edit(selectedBook)" [matTooltip]="'anms.examples.crud.tooltip.edit' | translate"
-                matTooltipPosition="above">
+              <fa-icon icon="edit" (click)="edit(selectedmovie)"
+                [matTooltip]="'anms.examples.crud.tooltip.edit' | translate" matTooltipPosition="above">
               </fa-icon>
             </button>
-            <button mat-icon-button color="warn" (click)="delete(selectedBook)">
+            <button mat-icon-button color="warn" (click)="delete(selectedmovie)">
               <fa-icon icon="trash" [matTooltip]="'anms.examples.crud.tooltip.delete' | translate"
                 matTooltipPosition="above">
               </fa-icon>
@@ -37,14 +40,13 @@
           </span>
         </span>
       </span>
-
-      <form #bookForm="ngForm" [formGroup]="bookFormGroup" [style.display]="isEditing ? 'block' : 'none'"
+      <form #movieForm="ngForm" [formGroup]="movieFormGroup" [style.display]="isEditing ? 'block' : 'none'"
         [ngClass]="routeAnimationsElements">
         <div class="row">
           <mat-form-field class="col">
-            <input matInput placeholder="{{ 'anms.examples.crud.placeholder1' | translate }}"
-              formControlName="title" required autofocus>
-            <mat-error *ngIf="bookFormGroup.get('title').invalid">
+            <input matInput placeholder="{{ 'anms.examples.crud.placeholder1' | translate }}" formControlName="title"
+              required autofocus>
+            <mat-error *ngIf="movieFormGroup.get('title').invalid">
               {{ 'anms.examples.crud.placeholder1' | translate }}
               {{ 'anms.examples.crud.error' | translate }}
             </mat-error>
@@ -52,10 +54,20 @@
         </div>
         <div class="row">
           <mat-form-field class="col">
-            <input matInput placeholder="{{ 'anms.examples.crud.placeholder2' | translate }}"
-              formControlName="author" required>
-            <mat-error *ngIf="bookFormGroup.get('author').hasError('required')">
+            <input matInput placeholder="{{ 'anms.examples.crud.placeholder2' | translate }}" formControlName="imageUrl"
+              required>
+            <mat-error *ngIf="movieFormGroup.get('imageUrl').hasError('required')">
               {{ 'anms.examples.crud.placeholder2' | translate }}
+              {{ 'anms.examples.crud.error' | translate }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <mat-form-field class="col">
+            <input matInput placeholder="{{ 'anms.examples.crud.placeholder8' | translate }}"
+              formControlName="videoUrl">
+            <mat-error *ngIf="movieFormGroup.get('videoUrl').hasError('required')">
+              {{ 'anms.examples.crud.placeholder8' | translate }}
               {{ 'anms.examples.crud.error' | translate }}
             </mat-error>
           </mat-form-field>
@@ -64,7 +76,7 @@
           <mat-form-field class="col">
             <textarea matInput placeholder="{{ 'anms.examples.crud.placeholder3' | translate }}"
               formControlName="description" rows="5"></textarea>
-            <mat-error *ngIf="bookFormGroup.get('description').invalid">
+            <mat-error *ngIf="movieFormGroup.get('description').invalid">
               {{ 'anms.examples.crud.placeholder1' | translate }}
               {{ 'anms.examples.crud.error' | translate }}
             </mat-error>
@@ -81,20 +93,21 @@
           </div>
         </div>
       </form>
-
       <ng-container *ngIf="!isEditing">
-        <div [ngClass]="routeAnimationsElements" *ngIf="selectedBook$ | async as selectedBook; else noSelectedBookTmpl">
-          <h3>{{ selectedBook.title }}</h3>
-          <mat-divider></mat-divider>
-          <p>{{ selectedBook.description }}</p>
-          <i>{{ selectedBook.author }}</i>
+        <div [ngClass]="routeAnimationsElements"
+          *ngIf="selectedmovie$ | async as selectedmovie; else noSelectedmovieTmpl">
+          <h3>{{ selectedmovie.title }}</h3>
+          <video width="320" height="240" controls>
+              <source src="{{selectedmovie.videoUrl}}" type="video/mp4">
+          </video>
+          <p>{{ selectedmovie.description }}</p>
         </div>
 
-        <ng-template #noSelectedBookTmpl>
+        <!-- <ng-template #noSelectedmovieTmpl>
           <p [ngClass]="routeAnimationsElements">
             {{'anms.examples.crud.text' | translate }} <code>@ngrx/entity</code>.
           </p>
-        </ng-template>
+        </ng-template> -->
       </ng-container>
 
     </div>
