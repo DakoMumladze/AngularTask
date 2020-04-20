@@ -1,4 +1,5 @@
 # Project using  Angular 8, NgRx and Angular Material Starter
+# testing project with Angular
 
 ## Useful Commands
 
